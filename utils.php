@@ -284,14 +284,14 @@ function reference_to_ris($reference)
 		'spage' 	=> 'SP',
 		'epage' 	=> 'EP',
 		'year' 		=> 'Y1',
-		'data'		=> 'PY',
+		'date'		=> 'PY',
 		'abstract'	=> 'N2',
 		'url'		=> 'UR',
 		'pdf'		=> 'L1',
 		'doi'		=> 'DO',
 		'notes'		=> 'N1',
 		'oai'		=> 'ID',
-		'wikispecies' => 'ID'
+		'id' 		=> 'ID'
 		);
 		
 	$ris = '';
@@ -311,6 +311,7 @@ function reference_to_ris($reference)
 			'spage',
 			'epage',
 			'year',
+			'date',
 			'doi',
 			'url',
 			'pdf'
@@ -331,6 +332,14 @@ function reference_to_ris($reference)
 						}
 					}
 					break;
+					
+				case 'journal':
+					if (isset($reference->series))
+					{
+						$v .= ' series ' . $reference->series;
+					}
+					$ris .= $field_to_ris_key[$k] . "  - " . $v . "\n";
+					break;
 				
 				case 'date':
 					//echo "|$v|\n";
@@ -338,11 +347,12 @@ function reference_to_ris($reference)
 					{
 						//print_r($matches);
 						$ris .= "PY  - " . $matches['year'] . "/" . $matches['month'] . "/" . $matches['day']  . "/" . "\n";
-						$ris .= "Y1  - " . $matches['year'] . "\n";
+						//$ris .= "Y1  - " . $matches['year'] . "\n";
 					}
 					else
 					{
-						$ris .= "Y1  - " . $v . "\n";
+						$ris .= "PY  - " . $v . "\n";
+						//$ris .= "Y1  - " . $v . "\n";
 					}		
 					break;
 				
@@ -449,7 +459,7 @@ function reference_to_tsv($reference, $k = null)
 }
 
 //----------------------------------------------------------------------------------------
-function reference2openurl($reference)
+function reference_to_openurl($reference)
 {
 	$openurl = '';
 	$openurl .= 'ctx_ver=Z39.88-2004&rft_val_fmt=info:ofi/fmt:kev:mtx:journal';
@@ -1108,6 +1118,148 @@ function reference_to_bibjson($reference)
 	compute_hashes($obj);
 	
 	return $obj;
+}
+
+//--------------------------------------------------------------------------------------------------
+/**
+ * @brief Convert to citeproc-js object
+ *
+ * @param reference Reference object to be converted
+ * @param id Local id for citeproc-js object 
+ *
+ * @return citeproc-js object
+ */
+function reference_to_citeprocjs($reference, $id = 'ITEM-1')
+{
+	$citeproc_obj = array();
+	
+	if (isset($reference->id))
+	{
+		$citeproc_obj['id'] = $reference->id;
+	}
+	else
+	{
+		$citeproc_obj['id'] = $id;
+	}
+	$citeproc_obj['title'] = $reference->title;
+	
+	if (isset($reference->abstract))
+	{
+		$citeproc_obj['abstract'] = $reference->abstract;
+	}
+	
+	/*
+	// multi
+	if (isset($reference->multi))
+	{
+		$citeproc_obj['multi'] = $reference->multi;
+	}
+	*/
+	
+	if (isset($reference->journal))
+	{	
+		$citeproc_obj['type'] = 'article-journal';
+	}
+	
+	$citeproc_obj['issued'] = new stdclass;
+	$citeproc_obj['issued']->{'date-parts'} = array();
+	$citeproc_obj['issued']->{'date-parts'}[] = array($reference->year);
+	
+	if (isset($reference->authors))
+	{
+		$citeproc_obj['author'] = array();
+
+		foreach ($reference->authors as $author)
+		{
+			$a = array();
+			if (isset($author->firstname))
+			{
+				$a['given'] = $author->firstname;
+				$a['family'] = $author->lastname;
+			}
+			else
+			{
+				$a['literal'] = $author->name;
+			}
+
+			if (isset($author->multi))
+			{
+				$a['multi']= $author->multi;
+			}
+			
+			$citeproc_obj['author'][] = $a;
+		}
+		
+	}
+	
+	if (isset($reference->journal))
+	{
+		$citeproc_obj['container-title'] = $reference->journal;
+		if (isset($reference->series))
+		{
+			$citeproc_obj['container-title'] .= ' series ' . $reference->series;
+		}
+		
+	}
+	
+	if (isset($reference->issn))
+	{
+		$citeproc_obj['ISSN'][] = $reference->issn;
+	}
+
+	if (isset($reference->volume))
+	{
+		$citeproc_obj['volume'] = $reference->volume;
+	}
+
+	if (isset($reference->issue))
+	{
+		$citeproc_obj['issue'] = $reference->issue;
+	}
+
+	if (isset($reference->spage))
+	{
+		$citeproc_obj['page'] = $reference->spage;
+	}
+
+	if (isset($reference->epage))
+	{
+		$citeproc_obj['page'] .= '-' . $reference->epage;
+	}
+
+	
+	/*	
+	// multi
+	if (isset($reference->journal->multi))
+	{
+		if (isset($citeproc_obj['multi']))
+		{
+			$citeproc_obj['multi']->_key->{'container-title'} = $reference->journal->multi->_key->name;
+		}
+		else
+		{
+			$citeproc_obj['multi']= $reference->journal->multi;
+		}
+	}
+	*/	
+
+	if (isset($reference->doi))
+	{
+		$citeproc_obj['DOI'] = $reference->doi;
+	}
+	
+	if (isset($reference->url))
+	{
+		$citeproc_obj['URL'] = $reference->url;
+	}
+
+	if (isset($reference->pmid))
+	{
+		$citeproc_obj['PMID'] = $reference->pmid;
+	}
+
+	
+	return $citeproc_obj;
 }
 
 //----------------------------------------------------------------------------------------
