@@ -1,0 +1,60 @@
+'''Editing William Warren''' (1839–1914), English entomologist.
+
+== Authored taxa ==
+{{Taxa}}
+
+==Publications==
+{{inc}}
+===1894===
+{{Warren, 1894}}
+
+===1895===
+{{Warren, 1895}}
+* {{a|William Warren|Warren, W.}} 1896. New Geometridae in the Tring Museum. [[ISSN 0950-7655|''Novitates Zoologicae'']] 3: 99–148.
+* {{a|William Warren|Warren, W.}} 1896. New species of Drepanulidae, Uraniidae, Epiplemidae, and Geometridae from the Papuan region. [[ISSN 0950-7655|''Novitates Zoologicae'']] 3: 272–306.
+* {{a|William Warren|Warren, W.}} 1896. New species of Drepanulidae, Thyrididae, Uraniidae, Epiplemidae, and Geometridae in the Tring Museum. [[ISSN 0950-7655|''Novitates Zoologicae'']] 3: 335–419.
+
+===1897===
+{{Warren, 1897}}
+
+===1898===
+* {{a|William Warren|Warren, W.}} 1898. New species and genera of the families Thyrididae, Uraniidae, Epiplemidae, and Geometridae. [[ISSN 0950-7655|''Novitates Zoologicae'']] 5: 5–41.
+* {{a|William Warren|Warren, W.}} 1898. New species and genera of the families Drepanulidae, Thyrididae, Uraniidae, Epiplemidae, and Geometridae from the Old-World regions. [[ISSN 0950-7655|''Novitates Zoologicae'']] 5: 221–258.
+* {{a|William Warren|Warren, W.}} 1899. New species and genera of the families Drepanulidae, Thyrididae, Uraniidae, Epiplemidae, and Geometridae from the Old-World regions. [[ISSN 0950-7655|''Novitates Zoologicae'']] 6(1): 1–66.
+
+===1900===
+{{Warren, 1900}}
+* {{a|William Warren|Warren, W.}} 1900. New genera and species of American Drepanulidae, Thyrididae, Epiplemidae, and Geometridae. [[ISSN 0950-7655|''Novitates Zoologicae'']] 7(2): 117–225. [https://archive.org/stream/novitateszoologi07lond#page/116/mode/2up ARCHIVE]
+
+===1901===
+* {{a|William Warren|Warren, W.}} 1901. New Thyrididae, Epiplemidae and Geometridae from the Ethiopian region. [[ISSN 0950-7655|''Novitates Zoologicae'']] 8: 6–20.
+* {{a|William Warren|Warren, W.}} 1901. Drepanulidae, Thyrididae, Epiplemidae, and Geometridae from the Aethiopian region. [[ISSN 0950-7655|''Novitates Zoologicae'']] 8: 202–217.
+
+===1902===
+{{Warren, 1902}}
+
+===1904===
+* {{a|William Warren|Warren, W.}} 1904. New Drepanulidae, Thyrididae, Uraniidae, and Geometridae from the Aethiopian Region. [[ISSN 0950-7655|''Novitates Zoologicae'']] 11: 461–482.
+
+===1905===
+* {{a|William Warren|Warren, W.}} 1905. New American Thyrididae, Uraniidae, and Geometridae. [[ISSN 0950-7655|''Novitates Zoologicae'']] 12: 307–379. {{BHL|page/3479057}}
+* {{a|William Warren|Warren, W.}} 1905. New African Thyrididae, Uraniidae, and Geometridae. [[ISSN 0950-7655|''Novitates Zoologicae'']] 12: 380–409. {{BHL|page/3479130}}
+
+===1909===
+* {{a|William Warren|Warren, W.}} 1909. New species of Uraniidae and geometridae from the Aethiopian region. [[ISSN 0950-7655|''Novitates Zoologicae'']] 16: 110–122.
+
+===1911===
+* {{a|William Warren|Warren, W.}} 1911. Description of some new Geometridae and Pyralidae from South Africa. ''Annals of the South African Museum'' 10(1): 19–30.
+
+===1912===
+* {{a|William Warren|Warren, W.}} 1912. New Noctuidae in the Tring Museum mainly from the Indo-Oriental Region [[ISSN 0950-7655|''Novitates Zoologicae'']] 19: 1-57.
+* {{a|William Warren|Warren, W.}} 1912. New Geometridae in the Tring Museum from new Guinea. [[ISSN 0950-7655|''Novitates Zoologicae'']] 19: 68-85.
+
+===1914===
+* {{a|William Warren|Warren, W.}} 1914. New species of Drepanulidae, Noctuidae and Geometridae in the Tring museum. [[ISSN 0950-7655|''Novitates Zoologicae'']] 21: 401-425.
+
+===1915===
+* {{a|William Warren|Warren, W.}} 1915. Some new oriental Cymatophoridae in the Tring museum. [[ISSN 0950-7655|''Novitates Zoologicae'']] 22: 154-159.
+
+[[Category:Taxon authorities|Warren William]]
+[[Category:Entomologists|Warren William]]
