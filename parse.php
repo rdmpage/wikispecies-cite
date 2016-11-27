@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/utils.php');
 
 // Exploring code to parse Wikispecies citations
@@ -20,15 +21,26 @@ function escape_pattern($pattern)
 function post_process(&$reference)
 {
 	$reference->title = preg_replace("/\{\{aut\|([^\}\}]+|(?R))*}}/u", '$1', $reference->title);
+	
+	if (preg_match('/^\[(?<date>[0-9]{4})\]\.?\s+(?<title>.*)/u', $reference->title, $m))
+	{
+		$reference->date = $m['date'];
+		$reference->title = $m['title'];
+	}
 
 	$reference->title = preg_replace("/''([^'']+|(?R))''/u", '<i>$1</i>', $reference->title);
+	
+	if (isset($reference->wikispecies))
+	{
+		$reference->id = $reference->wikispecies;
+	}
 }
 
 //----------------------------------------------------------------------------------------
 function parse_wikispecies($string, $debug = false)
 {
 	$reference = new stdclass;
-	//$reference->notes = $string;
+	$reference->notes = $string;
 	$reference->parts = array();
 
 
@@ -84,9 +96,11 @@ function parse_wikispecies($string, $debug = false)
 
 	if (!isset($reference->parts['VOLUME-PAGINATION'] ))
 	{
-		//'']] 6(1): 1–66.		
+		//'']] 6(1): 1–66.	
+		// '']] (8), '''16'''(92): 146-152.	
 		if (preg_match("/
 					''\]\]
+					(\s+\((?<series>\d+)\))?
 					,?
 					\s+
 					(''')?
@@ -100,8 +114,19 @@ function parse_wikispecies($string, $debug = false)
 		{
 			$reference->matched[] = __LINE__;	
 			$reference->parts['VOLUME-PAGINATION'] = $m[0];
+			
+			if ($m['series'] != '')
+			{
+				$reference->series = $m['series'];
+			}
 
 			$reference->volume = $m['volume'];
+			
+			if ($m['issue'] != '')
+			{
+				$reference->issue = $m['issue'];
+			}			
+			
 			$reference->spage = $m['spage'];
 
 			if ($m['epage'] != '')
@@ -111,20 +136,22 @@ function parse_wikispecies($string, $debug = false)
 		}	
 	}
 	
+	
+	
 	// ''Proceedings of the Zoological Society of London'' 1888: 130–135
 	//  ''Annals and Magazine of Natural History'' ser 6, 9: 250–254.
 	if (!isset($reference->parts['JOURNAL']) && !isset($reference->parts['VOLUME-PAGINATION']))
 	{
 		if (preg_match("/
 			''(?<journal>[^'']+)''
-			(\s+ser\s+(?<series>\d+))?
+			(\s+ser\.?\s+(?<series>\d+))?
 			,?
 			\s+
 			(?<volume_pagination>
 			(?<volume>\d+)
 			(\((?<issue>.*)\))?
 			[,|:]
-			\s+(?<spage>[0-9]+)
+			\s*(?<spage>[0-9]+)
 			([-|–](?<epage>\d+))?
 			)						
 			/ux", $string, $m))
@@ -361,6 +388,16 @@ function parse_wikispecies($string, $debug = false)
 		$reference->bhl = strtolower($m[2][0]);
 	}
 
+	// [http://biodiversitylibrary.org/page/22131243 BHL] 
+	if (preg_match('/\[http:\/\/(www\.)?biodiversitylibrary.org\/(?<bhl>page\/\d+)\s+BHL]/i', $string, $m))
+	{
+		$reference->matched[] = __LINE__;		
+		$reference->parts['BHL'] = $m[0];		
+		$reference->bhl = $m['bhl'];
+	}
+	
+	
+	
 	// {{doi|10.2307/3393034}}
 	if (preg_match_all("/
 		(\{\{doi\|([^\}\}]+|(?R))*\}\})
@@ -410,10 +447,6 @@ function parse_wikispecies($string, $debug = false)
 		$reference->pdf = $m['pdf'];
 	}		
 
-	if ($debug)
-	{
-		print_r($reference);
-	}
 
 	// Quick and dirty OpenURL
 	$parameters = array();
@@ -448,12 +481,28 @@ function parse_wikispecies($string, $debug = false)
 				break;
 		}
 	}
+	
+	post_process($reference);
 
 	//echo 'http://direct.biostor.org/openurl?' . join('&', $parameters) . "\n";
 	
 	//echo reference_to_ris($reference);
 	
-	post_process($reference);
+	if ($debug)
+	{
+		print_r($reference);
+	}
+	
+	
+	if ($debug)
+	{
+		$citeproc = reference_to_citeprocjs($reference);
+		echo json_format(json_encode($citeproc));
+		
+		echo reference_to_ris($reference);
+	}
+	
+	
 	
 	
 	return $reference;
@@ -462,7 +511,7 @@ function parse_wikispecies($string, $debug = false)
 
 
 // test
-if (1)
+if (0)
 {
 	// examples
 
@@ -508,6 +557,19 @@ $refs=array("* {{aut|Thomas, O.}} 1888. On a new and interesting annectant genus
 
 $refs=array(
 "* {{aut|Thomas, O.}} 1892. On some new Mammalia from the East-Indian Archipelago. ''Annals and Magazine of Natural History'' ser 6, 9: 250–254.");
+
+$refs=array(
+"* {{aut|Thomas, O.}} 1906. Notes on South American rodents. II. On the allocation of certain species hitherto referred respectively to ''Oryzomys'', ''Thomasomys'', and ''Rhipidomys''. ''Annals and Magazine of Natural History'' ser 7, 18: 442–448.");
+
+$refs=array(
+"* {{auth|O.|Thomas|r}} 1915: New African rodents and insectivores, mostly collected by Dr. C. Christy for the Congo Museum. [[ISSN 0022-2933|''Annals and magazine of natural history'']] (8), '''16'''(92): 146-152. {{doi|10.1080/00222931508693699}} [http://biodiversitylibrary.org/page/22131243 BHL] <includeonly>[http://species.wikimedia.org/wiki/Template:Thomas,_1915 reference page]</includeonly>&nbsp;<noinclude>");
+
+$refs=array(
+"* {{a|Oldfield Thomas|Thomas, O.}} 1912. Three small mammals from SouthAmerica. ''Annals and Magazine of Natural History'' ser. 8, 9:408-410.");
+
+$refs=array(
+"* {{aut|Thomas, O.}} 1904 [1905]. On ''Hylochoerus'', the forest pig of Central Africa. ''Proceedings of the Zoological Society of London'' 1904(2): 193–199.");
+
 
 	foreach ($refs as $ref)
 	{
