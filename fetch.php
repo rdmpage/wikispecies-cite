@@ -23,8 +23,16 @@ function fetch_reference($reference_name)
 	foreach($nodeCollection as $node)
 	{
 		$text = $node->firstChild->nodeValue;
+		
 		$lines = explode("\n", $text);
+		
+		$text = join("", $lines);
+		
+		//echo $text;
+		$reference = parse_wikispecies($text);
 
+
+		/*
 		foreach ($lines as $line)
 		{
 			if (preg_match('/^\*\s+\{/', $line))
@@ -33,7 +41,7 @@ function fetch_reference($reference_name)
 				
 			}
 		}			
-	
+		*/
 	
 	}
 	

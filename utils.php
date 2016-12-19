@@ -296,10 +296,36 @@ function reference_to_ris($reference)
 		
 	$ris = '';
 	
-	$ris .= "TY  - JOUR\n";
+	if (isset($reference->type))
+	{
+		switch ($reference->type)
+		{
+			case 'article':
+				$ris .= "TY  - JOUR\n";
+				break;
+				
+			case 'book':
+				$ris .= "TY  - BOOK\n";
+				break;
+				
+			case 'chapter':
+				$ris .= "TY  - CHAP\n";
+				break;
+				
+			default:
+				$ris .= "TY  - GEN\n";
+				break;
+		}
+	}
+	else
+	{
+		$ris .= "TY  - JOUR\n";
+	}
+						
 
 	$keys = array(
 			'id',
+			'notes',
 			'wikispecies',
 			'authors',
 			'title',
@@ -314,7 +340,11 @@ function reference_to_ris($reference)
 			'date',
 			'doi',
 			'url',
-			'pdf'
+			'handle',
+			'bhl',
+			'jstor',
+			'pdf',
+			'zoobank'
 			);
 	foreach ($keys as $k)
 	{
@@ -354,6 +384,22 @@ function reference_to_ris($reference)
 						$ris .= "PY  - " . $v . "\n";
 						//$ris .= "Y1  - " . $v . "\n";
 					}		
+					break;
+					
+				case 'handle':
+					$ris .= "UR  - " . 'http://hdl.handle.net/' . $reference->handle . "\n";
+					break;
+
+				case 'bhl':
+					$ris .= "UR  - " . 'http://biodiversitylibrary.org/' . $reference->bhl . "\n";
+					break;
+
+				case 'jstor':
+					$ris .= "UR  - " . 'http://www.jstor.org/stable/' . $reference->jstor . "\n";
+					break;
+					
+				case 'zoobank':
+					$ris .= "UR  - " . 'http://zoobank.org/References/' . $reference->zoobank . "\n";
 					break;
 				
 				default:
@@ -1252,6 +1298,11 @@ function reference_to_citeprocjs($reference, $id = 'ITEM-1')
 	{
 		$citeproc_obj['URL'] = $reference->url;
 	}
+	
+	if (isset($reference->handle))
+	{
+		$citeproc_obj['URL'] = 'http://hdl.handle.net/' . $reference->handle;
+	}	
 
 	if (isset($reference->pmid))
 	{
