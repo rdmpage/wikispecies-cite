@@ -1,0 +1,15 @@
+[[File:Pittasoma michleri -Panama-8.jpg|thumb|220px| ''[[Pittasoma michleri]]'' ]]
+== Taxonavigation ==
+{{Pittasoma}}
+Species: {{sp|P|ittasoma|michleri}} {{splast|P|ittasoma|rufopileatum}}
+
+== Name ==
+''Pittasoma'' {{a|John Cassin|Cassin}}, 1860
+
+== References ==
+''Proceedings of the Academy of Natural Sciences of Philadelphia'' 12 p.189
+=== Selected references ===
+{{Rice, 2005a}}
+{{Rice, 2005b}}
+
+[[Category:John Cassin taxa]]
