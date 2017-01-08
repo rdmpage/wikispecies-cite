@@ -6,14 +6,23 @@ require_once('fetch.php');
 $filename = 'examples/william_warren_wikispecies.txt';
 $filename = 'examples/Oldfield_Thomas.txt';
 $filename = 'examples/boulenger.txt';
-//$filename = 'alpheus.txt';
+$filename = 'examples/alpheus.txt';
+//$filename = 'examples/John_E._McCosker.txt';
+
+$filename = 'examples/Günter_Hugo_Eugen_Reiss.txt';
+$filename = 'examples/Roman_B_Hołyński.txt';
+$filename = 'examples/Pittasoma.txt';
+$filename = 'examples/Ernst_Hartert.txt';
+$filename = 'examples/José_Álvarez_Alonso.txt';
+$filename = 'examples/Lionel_Walter_Rothschild.txt';
+$filename = 'examples/Eugène_Simon.txt';
 
 $text = file_get_contents($filename);
 
 $lines = explode("\n", $text);
 
 $fetch = false; // offline
-//$fetch = true; // online
+$fetch = true; // online
 
 foreach ($lines as $line)
 {
@@ -32,13 +41,14 @@ foreach ($lines as $line)
 	if (!$matched)
 	{
 		// transcluded template in list 
-		if (preg_match('/^\*\s+\{\{(?<refname>[A-Z][a-z]+,\s+[0-9]{4}[a-z]?)\}\}/', $line, $m))
+		if (preg_match('/^(\*\s+)?\{\{(?<refname>[A-Z][a-z]+(\s|\&|[A-Z][a-z]+)*,\s+[0-9]{4}[a-z]?)\}\}/', $line, $m))
 		{
 			//echo $line . "\n";
 			//print_r($m);
 		
 			$refname = $m['refname'];
 			$refname = str_replace(' ', '_', $refname);
+			$refname = str_replace('&', '%26', $refname);
 		
 			if ($fetch)
 			{
@@ -67,8 +77,8 @@ foreach ($lines as $line)
 		
 			if (!isset($reference->title))
 			{
-				echo "not parsed\n"; 
-				exit();
+				echo " *** not parsed ***\n"; 
+				//exit();
 			}
 			
 			$matched = true;
