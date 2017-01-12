@@ -14,8 +14,10 @@ $filename = 'examples/Roman_B_Hołyński.txt';
 $filename = 'examples/Pittasoma.txt';
 $filename = 'examples/Ernst_Hartert.txt';
 $filename = 'examples/José_Álvarez_Alonso.txt';
-$filename = 'examples/Lionel_Walter_Rothschild.txt';
-$filename = 'examples/Eugène_Simon.txt';
+//$filename = 'examples/Lionel_Walter_Rothschild.txt';
+//$filename = 'examples/Eugène_Simon.txt';
+//$filename = 'examples/Léon_Marc_Herminie_Fairmaire.txt';
+//$filename = 'examples/Chostonectes.txt';
 
 $text = file_get_contents($filename);
 
