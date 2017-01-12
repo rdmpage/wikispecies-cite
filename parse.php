@@ -57,6 +57,13 @@ function post_process(&$reference)
 			}
 		}
 	}
+	
+	if (isset($reference->pdf))
+	{
+		$reference->pdf = preg_replace('/\s+Full article$/i', '', $reference->pdf);
+	}
+	
+	
 }
 
 //----------------------------------------------------------------------------------------
@@ -215,6 +222,54 @@ function parse_wikispecies($string, $debug = false)
 			}
 		}	
 	}
+	
+	if (!isset($reference->parts['JOURNAL']) && !isset($reference->parts['VOLUME-PAGINATION']))
+	{
+		if (preg_match("/
+''(?<journal>(\w+(,?\s+\w+[']?\w+)*))''[,|\.]?(\s+(?<publoc>\w+(\s+\w+)*))?\s*(?<volume_pagination>(''')?(?<volume>\d+)(''')?:\s*(?<spage>\d+)(-(?<epage>\d+))?)		
+			/ux", $string, $m))
+		{
+			$reference->matched[] = __LINE__;	
+			$reference->parts['JOURNAL'] = "''" . $m['journal'] . "''";
+			$reference->parts['VOLUME-PAGINATION'] = $m['volume_pagination'];
+
+			$reference->journal = $m['journal'];
+			$reference->volume = $m['volume'];
+			if ($m['issue'] != '')
+			{
+				$reference->issue = $m['issue'];
+			}
+	
+			$reference->spage = $m['spage'];
+
+			if ($m['epage'] != '')
+			{
+				$reference->epage = $m['epage'];
+			}
+		}
+	}
+			
+	if (!isset($reference->parts['JOURNAL']) && !isset($reference->parts['VOLUME-PAGINATION']))
+	{
+		if (preg_match("/
+''(?<journal>(\w+(,?\s+\w+[']?\w+)*))''[,|\.]?(\s+(?<publoc>\w+))?\s*(?<volume_pagination>:\s*(?<spage>\d+)(-(?<epage>\d+))?)		
+			/ux", $string, $m))
+		{
+			$reference->matched[] = __LINE__;	
+			$reference->parts['JOURNAL'] = "''" . $m['journal'] . "''";
+			$reference->parts['VOLUME-PAGINATION'] = $m['volume_pagination'];
+
+			$reference->journal = $m['journal'];
+	
+			$reference->spage = $m['spage'];
+
+			if ($m['epage'] != '')
+			{
+				$reference->epage = $m['epage'];
+			}
+		}
+	}
+
 	
 	
 	// ''Proceedings of the Zoological Society of London'' 1888: 130–135
@@ -583,6 +638,7 @@ function parse_wikispecies($string, $debug = false)
 	// Authors----------------------------------------------------------------------------
 	
 	// same article may have multiple kids of author templates WTF!
+	// need to think carefully about this and how we handle this (sigh)
 	
 	//if (!isset($reference->parts['AUTHOR']))
 	{
@@ -650,7 +706,7 @@ function parse_wikispecies($string, $debug = false)
 	}
 		
 	// aut and no links
-	//if (!isset($reference->parts['AUTHOR']))
+	if (!isset($reference->parts['AUTHOR']))
 	{
 		// {{aut|Beutel, R.G.}}
 		if (preg_match_all("/
