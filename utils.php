@@ -397,6 +397,10 @@ function reference_to_ris($reference)
 				case 'jstor':
 					$ris .= "UR  - " . 'http://www.jstor.org/stable/' . $reference->jstor . "\n";
 					break;
+
+				case 'wikispecies':
+					$ris .= "UR  - " . 'https://species.wikimedia.org/wiki/Template:' . $reference->wikispecies . "\n";
+					break;
 					
 				case 'zoobank':
 					$ris .= "UR  - " . 'http://zoobank.org/References/' . $reference->zoobank . "\n";
