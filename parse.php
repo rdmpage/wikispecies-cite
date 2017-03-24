@@ -16,6 +16,7 @@ function escape_pattern($pattern)
 	$pattern = str_replace(')', '\)', $pattern);
 	$pattern = str_replace("'", "\'", $pattern);
 	$pattern = str_replace("+", "\+", $pattern);
+	$pattern = str_replace("/", "\/", $pattern);
 	
 	return $pattern;
 }
@@ -36,6 +37,9 @@ function post_process(&$reference)
 		$reference->title = preg_replace("/''([^'']+|(?R))''/u", '<i>$1</i>', $reference->title);
 		
 		$reference->title = preg_replace("/:$/u", '', $reference->title);
+		
+		$reference->title = preg_replace("/\[\[/u", '', $reference->title);
+		$reference->title = preg_replace("/\]\]/u", '', $reference->title);
 	}	
 	
 	if (isset($reference->wikispecies))
@@ -63,6 +67,48 @@ function post_process(&$reference)
 		$reference->pdf = preg_replace('/\s+Full article$/i', '', $reference->pdf);
 	}
 	
+	
+	// generate a cleaned citation string that we can use if all else fails
+	
+	if (isset($reference->notes))
+	{
+		$citation = $reference->notes;
+		
+		
+		// bold and italics
+		$citation = preg_replace("/'{2,3}/u", '', $citation);
+		
+		// <includeonly>
+		$citation = preg_replace("/<includeonly>(.*)$/", '', $citation);
+		
+		// links with content
+		$citation = preg_replace("/\[http[:\/a-zA-Z0-9\.#]+\s+(.*)\]/U", '$1', $citation);
+		
+		// authors
+		$citation = preg_replace("/\{\{aut\|\[\[(.*)\|(.*)\]\]\}\}/U", '$2', $citation);
+
+		// {{a|Hans Fruhstorfer|Fruhstorfer, H.}}
+		$citation = preg_replace("/\{\{a\|(.*)\|(.*)\}\}/U", '$2', $citation);
+		
+		// {{aut|Seitz, A.}}
+		$citation = preg_replace("/\{\{aut\|(.*)\}\}/U", '$1', $citation);
+		
+		// Wiki links
+		$citation= preg_replace("/\[\[/u", '', $citation);
+		$citation = preg_replace("/\]\]/u", '', $citation);
+		
+		// Letter after year
+		$citation = preg_replace("/([0-9]{4})[a-z]/u", '$1', $citation);
+		
+		// . BHL.
+		$citation = preg_replace("/[\.|,]\s+BHL\.?/u", '', $citation);
+		
+		
+		$citation = preg_replace("/^\s*\*\s*/u", '', $citation);
+		
+		
+		$reference->custom1 = $citation;
+	}
 	
 }
 
@@ -99,13 +145,13 @@ function parse_wikispecies($string, $debug = false)
 	{
 		if (preg_match("/
 			''(?<journal>[^'']+)''
-			,?
+			[,|.]?
 			\s+	
 			(?<volume_pagination>		
 			'''(?<volume>[0-9]+)'''
-			(\([0-9]+\))?
+			(\((?<issue>.*)\))?
 			:
-			\s+
+			\s*
 			\[
 			(?<url>http(.*))
 			\s+
@@ -122,6 +168,12 @@ function parse_wikispecies($string, $debug = false)
 			$reference->journal = $m['journal'];
 
 			$reference->volume = $m['volume'];
+			
+			if ($m['issue'] != '')
+			{
+				$reference->issue = $m['issue'];
+			}			
+						
 			$reference->spage = $m['spage'];
 
 			if ($m['epage'] != '')
@@ -131,6 +183,118 @@ function parse_wikispecies($string, $debug = false)
 
 		}
 	}	
+	
+	// ''Arch. Naturgesch''. '''83''' (A) (1): [http://biodiversitylibrary.org/item/47767#page/83/mode/1up 73-76] 
+	if (!isset($reference->parts['VOLUME-PAGINATION'] ))
+	{
+		if (preg_match("/
+			''(?<journal>[^'']+)''
+			[,|.]?
+			\s+
+			(?<volume_pagination>		
+			'''(?<volume>[0-9]+)'''
+			(\s+\((?<extra>\w+)\))?				
+			\s*
+			(\((?<issue>.*)\))?
+			:
+			\s*
+			\[
+			(?<url>http(.*))
+			\s+
+			(?<spage>[0-9]+)
+			([-|–](?<epage>\d+))?
+			\]
+			)
+			/x", $string, $m))
+		{
+			//print_r($m);
+		
+		
+			$reference->matched[] = __LINE__;	
+			$reference->parts['JOURNAL'] = "''" . $m['journal'] . "''";
+			$reference->parts['VOLUME-PAGINATION'] = $m['volume_pagination'];
+
+			$reference->journal = $m['journal'];
+
+			if ($m['extra'] != '')
+			{
+				$reference->journal .= ' ' . $m['extra'];
+			}			
+
+
+			$reference->volume = $m['volume'];
+			
+			if ($m['issue'] != '')
+			{
+				$reference->issue = $m['issue'];
+			}			
+						
+			$reference->spage = $m['spage'];
+
+			if ($m['epage'] != '')
+			{
+				$reference->epage = $m['epage'];
+			}
+
+		}
+	}		
+	
+	// ''Arch. Naturgesch''. (A) '''83''' (2): [http://biodiversitylibrary.org/item/47767#page/269/mode/1up 77-101]. 
+	if (!isset($reference->parts['VOLUME-PAGINATION'] ))
+	{
+		if (preg_match("/
+			''(?<journal>[^'']+)''
+			[,|.]?
+			(\s+\((?<extra>\w+)\))?	
+			\s+
+			(?<volume_pagination>		
+			'''(?<volume>[0-9]+)'''
+			\s*
+			(\((?<issue>.*)\))?
+			:
+			\s*
+			\[
+			(?<url>http(.*))
+			\s+
+			(?<spage>[0-9]+)
+			([-|–](?<epage>\d+))?
+			\]
+			)
+			/x", $string, $m))
+		{
+			//print_r($m);
+		
+		
+			$reference->matched[] = __LINE__;	
+			$reference->parts['JOURNAL'] = "''" . $m['journal'] . "''";
+			$reference->parts['VOLUME-PAGINATION'] = $m['volume_pagination'];
+
+			$reference->journal = $m['journal'];
+
+			if ($m['extra'] != '')
+			{
+				$reference->journal .= ' ' . $m['extra'];
+			}			
+
+
+			$reference->volume = $m['volume'];
+			
+			if ($m['issue'] != '')
+			{
+				$reference->issue = $m['issue'];
+			}			
+						
+			$reference->spage = $m['spage'];
+
+			if ($m['epage'] != '')
+			{
+				$reference->epage = $m['epage'];
+			}
+
+		}
+	}	
+	
+		
 
 	if (!isset($reference->parts['VOLUME-PAGINATION'] ))
 	{
@@ -223,10 +387,60 @@ function parse_wikispecies($string, $debug = false)
 		}	
 	}
 	
+	
+	
+	if (!isset($reference->parts['VOLUME-PAGINATION'] ))
+	{
+		//'', (Ser. 2) '''9''': 138-148.
+		if (preg_match("/
+					''(?<journal>[^'']+)''
+					,?
+					(?<volume_pagination>	
+					(\s+\((Ser\.\s+)?(?<series>\d+)\),?)?
+					(\s+v\.)?
+					\s+
+					(''')?
+					(?<volume>\d+)
+					(''')?
+					(\s*\((?<issue>.*)\))?
+					:
+					\s*(?<spage>[0-9]+)
+					([-|–](?<epage>\d+))?
+					)				
+					/xu", $string, $m))
+		{
+			$reference->parts['JOURNAL'] = "''" . $m['journal'] . "''";
+			$reference->parts['VOLUME-PAGINATION'] = $m['volume_pagination'];
+
+			$reference->journal = $m['journal'];
+			
+			if ($m['series'] != '')
+			{
+				$reference->series = $m['series'];
+			}
+
+			$reference->volume = $m['volume'];
+			
+			if ($m['issue'] != '')
+			{
+				$reference->issue = $m['issue'];
+			}			
+			
+			$reference->spage = $m['spage'];
+
+			if ($m['epage'] != '')
+			{
+				$reference->epage = $m['epage'];
+			}
+		}	
+	}	
+	
+	
+	
 	if (!isset($reference->parts['JOURNAL']) && !isset($reference->parts['VOLUME-PAGINATION']))
 	{
 		if (preg_match("/
-''(?<journal>(\w+(,?\s+\w+[']?\w+)*))''[,|\.]?(\s+(?<publoc>\w+(\s+\w+)*))?\s*(?<volume_pagination>(''')?(?<volume>\d+)(''')?:\s*(?<spage>\d+)(-(?<epage>\d+))?)		
+''(?<journal>(\w+(,?\s+\w+[']?\w+)*))''[,|\.]?(\s+(?<publoc>\w+(\s+\w+)*))?\s*(?<volume_pagination>(''')?(?<volume>\d+)(''')?:\s*(?<spage>\d+)([-|–](?<epage>\d+))?)		
 			/ux", $string, $m))
 		{
 			$reference->matched[] = __LINE__;	
@@ -787,7 +1001,7 @@ function parse_wikispecies($string, $debug = false)
 
 	// Year ------------------------------------------------------------------------------
 	// year
-	if (preg_match('/\}\}[,|\.]?\s+[\(]?(?<year>[0-9]{4})[\)]?/', $string, $m))
+	if (preg_match('/\}\}[,|\.|;]?\s+[\(]?(?<year>[0-9]{4})[\)]?/', $string, $m))
 	{
 		$reference->matched[] = __LINE__;
 		$reference->parts['YEAR'] = $m[0];

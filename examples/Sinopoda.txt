@@ -1,0 +1,62 @@
+[[Image:Sinopoda.okinawana.female.-.tanikawa.jpg|thumb|250px|{{female}} ''[[Sinopoda okinawana]]'']]
+==Taxonavigation==
+{{Sinopoda}}
+Species: 
+{{sp|S|inopoda|albofasciata}}
+{{sp|S|inopoda|altissima}}
+{{sp|S|inopoda|anguina}}
+{{sp|S|inopoda|angulata}}
+{{sp|S|inopoda|campanacea}}
+{{sp|S|inopoda|chongan}}
+{{sp|S|inopoda|cochlearia}}
+{{sp|S|inopoda|crassa}}
+{{sp|S|inopoda|dayong}}
+{{sp|S|inopoda|derivata}}
+{{sp|S|inopoda|exspectata}}
+{{sp|S|inopoda|fasciculata}}
+{{sp|S|inopoda|forcipata}}
+{{sp|S|inopoda|fornicata}}
+{{sp|S|inopoda|globosa}}
+{{sp|S|inopoda|grandispinosa}}
+{{sp|S|inopoda|hamata}}
+{{sp|S|inopoda|himalayica}}
+{{sp|S|inopoda|koreana}}
+{{sp|S|inopoda|licenti}}
+{{sp|S|inopoda|longiducta}}
+{{sp|S|inopoda|longshan}}
+{{sp|S|inopoda|microphthalma}}
+{{sp|S|inopoda|minschana}}
+{{sp|S|inopoda|nuda}}
+{{sp|S|inopoda|ogatai}}
+{{sp|S|inopoda|okinawana}}
+{{sp|S|inopoda|pengi}}
+{{sp|S|inopoda|semicirculata}}
+{{sp|S|inopoda|serpentembolus}}
+{{sp|S|inopoda|serrata}}
+{{sp|S|inopoda|shennonga}}
+{{sp|S|inopoda|stellata}}
+{{sp|S|inopoda|stellatops}}
+{{sp|S|inopoda|tanikawai}}
+{{sp|S|inopoda|tengchongensis}}
+{{sp|S|inopoda|triangula}}
+{{sp|S|inopoda|undata}}
+{{sp|S|inopoda|wangi}}
+{{sp|S|inopoda|xieae}}
+{{splast|S|inopoda|yaojingensis}}
+
+==Name==
+''Sinopoda'' [[Peter Jäger|Jäger]], 1999
+
+Type species: ''[[Sarotes forcipatus]]'' [[Karsch]], 1881
+
+==References==
+* {{aut|Jäger, P.}} 1999: ''Sinopoda'', a new genus of Heteropodinae (Araneae, Sparassidae) from Asia. [[ISSN 0161-8202|''Journal of arachnology'']], '''27'''(1): 19-24. [http://www.jstor.org/stable/3705961 JSTOR]
+{{Zt3415.37}}
+* {{aut|Liu, J.}}, {{aut|S. Q. Li}} & {{aut|P. Jäger}}. 2008. New cave-dwelling huntsman spider species of the genus ''Sinopoda'' (Araneae: Sparassidae) from southern China. ''Zootaxa'' '''1857''': 1-20. [http://www.mapress.com/zootaxa/2008/f/z01857p020f.pdf Abstract & excerpt] [http://www.mapress.com/zootaxa/2008/2/zt01857p020.pdf PDF] [2009: Erratum. ''Zootaxa'', '''2116''': 68]
+* {{aut|Platnick, N. I.}} 2009. The World Spider Catalog, version 9.5. American Museum of Natural History. [http://research.amnh.org/entomology/spiders/catalog/SPARASSIDAE.html]
+{{Zhang, Zhang & Zhang, 2015}}
+
+==Vernacular names==
+{{VN
+|ko=별농발거미속
+}}

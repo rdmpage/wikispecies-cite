@@ -291,7 +291,9 @@ function reference_to_ris($reference)
 		'doi'		=> 'DO',
 		'notes'		=> 'N1',
 		'oai'		=> 'ID',
-		'id' 		=> 'ID'
+		'id' 		=> 'ID',
+		'source'	=> 'DP',
+		'custom1'	=> 'C1'
 		);
 		
 	$ris = '';
@@ -326,6 +328,7 @@ function reference_to_ris($reference)
 	$keys = array(
 			'id',
 			'notes',
+			'custom1',
 			'wikispecies',
 			'authors',
 			'title',
@@ -344,7 +347,9 @@ function reference_to_ris($reference)
 			'bhl',
 			'jstor',
 			'pdf',
-			'zoobank'
+			'zoobank',
+			'source',
+			'openurl'
 			);
 	foreach ($keys as $k)
 	{
@@ -404,6 +409,10 @@ function reference_to_ris($reference)
 					
 				case 'zoobank':
 					$ris .= "UR  - " . 'http://zoobank.org/References/' . $reference->zoobank . "\n";
+					break;
+
+				case 'openurl':
+					$ris .= "UR  - " . 'http://direct.biostor.org/openurl?' . $reference->openurl . "\n";
 					break;
 				
 				default:
@@ -519,19 +528,24 @@ function reference_to_openurl($reference)
 	{
 		foreach ($reference->authors as $author)
 		{
-			$openurl .= '&rft.au=' . urlencode($author);
+			$openurl .= '&rft.au=' . $author->name;
 		}	
+	}
+	
+	if (isset($reference->journal))
+	{
+		$reference->genre = 'article';
 	}
 	
 	switch ($reference->genre)
 	{
 		case 'article':
-			$openurl .= '&rft.atitle=' . urlencode($reference->title);
-			$openurl .= '&rft.jtitle=' . urlencode($reference->journal);
+			$openurl .= '&rft.atitle=' . $reference->title;
+			$openurl .= '&rft.jtitle=' . $reference->journal;
 			break;
 			
 		default:
-			$openurl .= '&rft.title=' . urlencode($reference->title);
+			$openurl .= '&rft.title=' . $reference->title;
 			break;
 	}
 		
@@ -547,7 +561,7 @@ function reference_to_openurl($reference)
 	
 	if (isset($reference->issue))
 	{
-		$openurl .= '&amp;rft.issue=' . $reference->issue;
+		$openurl .= '&rft.issue=' . $reference->issue;
 	}		
 	
 	if (isset($reference->spage))

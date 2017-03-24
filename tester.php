@@ -170,7 +170,12 @@ $refs=array(
 "* {{a|Eugène Simon|Simon, E.}} 1911. Araneae et Opiliones (Troisième série). In Biospeologica. XXIII. Arch. zool. expér. gen. (5) 9(2): 177–206."
 );
 
+$refs=array(
+"* {{auth|P.|Bleeker|r}}, 1863: Mémoire sur les poissons de la côte de Guinée. ''Natuurkundige Verhandelingen van de Hollandsche Maatschappij der Wetenschappen te Haarlem'' (Ser. 2) v. 18 (1862): 1–136, Pls. 1–28.  <includeonly>[http://species.wikimedia.org/wiki/Template:Bleeker,_1863a reference page]</includeonly>&nbsp;<noinclude>** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference][[Category:Reference templates]]</noinclude>");
 
+$refs=array("*{{aut|[[Hans Fruhstorfer|Fruhstorfer, H.]]}}, 1916e. Neue Lokalrassen indischer Tagfalter. ''Ent. Rundsch''. '''33'''(5): [http://archive.org/stream/entomologischeru3234191517stut#page/n117/mode/1up 24-25]. <includeonly>[http://species.wikimedia.org/wiki/Template:Fruhstorfer,_1916e reference page]</includeonly>&nbsp;<noinclude>** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference][[Category:Reference templates]]</noinclude>");
+$refs=array("{{aut|[[Hans Fruhstorfer|Fruhstorfer, H.]]}}, 1919d. Revision der Gattung ''[[Poritia]]'' auf Grund der Morphologie der Generatsionsorgane. ''Arch. Naturgesch''. (A) '''83''' (2): [http://biodiversitylibrary.org/item/47767#page/269/mode/1up 77-101]. <includeonly>[http://species.wikimedia.org/wiki/Template:Fruhstorfer,_1919d reference page]</includeonly>&nbsp;<noinclude>** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference][[Category:Reference templates]]</noinclude>");
+$refs=array("*{{aut|[[Hans Fruhstorfer|Fruhstorfer, H.]]}}, 1919b. ''[[Spalgis]]'' eine bicontinentale Lycaenid gattung. ''Arch. Naturgesch''. '''83''' (A) (1): [http://biodiversitylibrary.org/item/47767#page/83/mode/1up 73-76], 1 fig. <includeonly>[http://species.wikimedia.org/wiki/Template:Fruhstorfer,_1919b reference page]</includeonly>&nbsp;<noinclude>** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference][[Category:Reference templates]]</noinclude>");
 foreach ($refs as $ref)
 {
 	parse_wikispecies($ref, true);

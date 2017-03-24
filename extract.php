@@ -18,6 +18,11 @@ $filename = 'examples/José_Álvarez_Alonso.txt';
 //$filename = 'examples/Eugène_Simon.txt';
 //$filename = 'examples/Léon_Marc_Herminie_Fairmaire.txt';
 //$filename = 'examples/Chostonectes.txt';
+$filename = 'examples/Heteropoda_nirounensis.txt';
+$filename = 'examples/Sinopoda.txt';
+
+$filename = 'examples/Pieter_Bleeker.txt';
+$filename = 'examples/Hans_Fruhstorfer.txt';
 
 $text = file_get_contents($filename);
 
@@ -25,6 +30,9 @@ $lines = explode("\n", $text);
 
 $fetch = false; // offline
 $fetch = true; // online
+
+$collection = array();
+
 
 foreach ($lines as $line)
 {
@@ -55,6 +63,9 @@ foreach ($lines as $line)
 			if ($fetch)
 			{
 				$reference = fetch_reference($refname);
+				
+				$reference->openurl = reference_to_openurl($reference);
+				
 				echo reference_to_ris($reference);
 			}
 			
@@ -73,7 +84,19 @@ foreach ($lines as $line)
 			//echo $line . "\n";
 		
 			$reference = parse_wikispecies($line);
+			
+			$reference->source = 'https://species.wikimedia.org';
+			
+			$reference->openurl = reference_to_openurl($reference);
+			
 			echo reference_to_ris($reference);
+			
+			/*
+			if (isset($reference->journal))
+			{
+				$collection[$reference->journal][] = reference_to_ris($reference);
+			}
+			*/
 		
 	//		print_r($reference);
 		
@@ -101,12 +124,34 @@ foreach ($lines as $line)
 			if ($fetch)
 			{
 				$reference = fetch_reference($refname);
+				
+				$reference->source = 'https://species.wikimedia.org';	
+				
+				$reference->openurl = reference_to_openurl($reference);
+												
 				echo reference_to_ris($reference);
+				
+				/*
+				if (isset($reference->journal))
+				{
+					$collection[$reference->journal][] = reference_to_ris($reference);
+				}
+				*/
+				
 			}
 			$matched = true;
 		}
 	}
 	
 }
+
+/*
+print_r($collection);
+
+foreach ($collection as $k => $v)
+{
+	echo join("\n", $v);
+}
+*/
 
 ?>
