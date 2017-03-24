@@ -1,4 +1,11 @@
 
+# Ignore Mercurial verison control
+citeproc-js/.hg
+citeproc-js/.hgignore
+citeproc-js/.hgtags
+
+citeproc-js/locale
+
 cookie.txt
 
 junk

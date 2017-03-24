@@ -1,0 +1,35 @@
+{
+    "abbreviations": false, 
+    "bibentries": false, 
+    "bibsection": false, 
+    "citation_items": [
+        [
+            {
+                "id": "ITEM-1"
+            }
+        ], 
+        [
+            {
+                "id": "ITEM-2"
+            }
+        ]
+    ], 
+    "citations": false, 
+    "csl": "<style \n      xmlns=\"http://purl.org/net/xbiblio/csl\"\n      class=\"note\"\n      version=\"1.0\">\n  <info>\n    <id />\n    <title />\n    <updated>2009-08-10T04:49:00+09:00</updated>\n  </info>\n  <locale>\n    <terms>\n      <term form=\"short\" name=\"Chapter\">ch.</term>\n    </terms>\n  </locale>\n  <citation>\n    <layout>\n      <group delimiter=\", \">\n        <text variable=\"title\"/>\n        <group delimiter=\" \">\n          <choose>\n            <if is-numeric=\"number\">\n              <text value=\"Pub. L. No.\"/>\n            </if>\n          </choose>\n          <number label-form=\"symbol\" variable=\"number\"/>\n        </group>\n      </group>\n    </layout>\n  </citation>\n</style>", 
+    "input": [
+        {
+            "id": "ITEM-1", 
+            "number": "ch. 888", 
+            "title": "Some Statute", 
+            "type": "legislation"
+        }, 
+        {
+            "id": "ITEM-2", 
+            "number": "999", 
+            "title": "Some Other Statute", 
+            "type": "legislation"
+        }
+    ], 
+    "mode": "citation", 
+    "result": "Some Statute, ch. 888\nSome Other Statute, Pub. L. No. 999"
+}

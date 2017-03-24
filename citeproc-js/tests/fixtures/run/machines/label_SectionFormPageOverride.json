@@ -1,0 +1,57 @@
+{
+    "abbreviations": false, 
+    "bibentries": false, 
+    "bibsection": false, 
+    "citation_items": [
+        [
+            {
+                "id": "ITEM-1", 
+                "label": "paragraph", 
+                "locator": "10"
+            }
+        ], 
+        [
+            {
+                "id": "ITEM-1", 
+                "label": "page", 
+                "locator": ", sec. 100 & 153"
+            }
+        ], 
+        [
+            {
+                "id": "ITEM-1", 
+                "label": "page", 
+                "locator": ", p. 827"
+            }
+        ], 
+        [
+            {
+                "id": "ITEM-1", 
+                "label": "page", 
+                "locator": "829"
+            }
+        ]
+    ], 
+    "citations": false, 
+    "csl": "<style \n      xmlns=\"http://purl.org/net/xbiblio/csl\"\n      class=\"note\"\n      version=\"1.0\">\n  <info>\n    <id />\n    <title />\n    <updated>2009-08-10T04:49:00+09:00</updated>\n  </info>\n  <citation>\n    <layout>\n      <group delimiter=\" \">\n        <text variable=\"title\"/>\n        <number variable=\"volume\"/>\n        <text variable=\"container-title\"/>\n        <group delimiter=\" \">\n          <label form=\"symbol\" variable=\"locator\"/>\n          <number label-form=\"symbol\" variable=\"locator\"/>\n        </group>\n        <date variable=\"original-date\" prefix=\"(\" suffix=\")\" form=\"text\" date-parts=\"year\"/>\n      </group>\n    </layout>\n  </citation>\n</style>", 
+    "input": [
+        {
+            "container-title": "Stat.", 
+            "id": "ITEM-1", 
+            "jurisdiction": "us", 
+            "original-date": {
+                "date-parts": [
+                    [
+                        1910
+                    ]
+                ]
+            }, 
+            "section": "p. 825", 
+            "title": "White Slave Traffic (Mann) Act", 
+            "type": "legislation", 
+            "volume": "36"
+        }
+    ], 
+    "mode": "citation", 
+    "result": "White Slave Traffic (Mann) Act 36 Stat. p. 825 ¶ 10 (1910)\nWhite Slave Traffic (Mann) Act 36 Stat. p. 825, §§ 100 &#38; 153 (1910)\nWhite Slave Traffic (Mann) Act 36 Stat. pp. 825, 827 (1910)\nWhite Slave Traffic (Mann) Act 36 Stat. pp. 825, 829 (1910)"
+}

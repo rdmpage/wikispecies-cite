@@ -1,0 +1,142 @@
+{
+    "abbreviations": false, 
+    "bibentries": false, 
+    "bibsection": false, 
+    "citation_items": false, 
+    "citations": [
+        [
+            {
+                "citationID": "10gk1bpdes", 
+                "citationItems": [
+                    {
+                        "id": 576, 
+                        "label": "page", 
+                        "locator": "347"
+                    }
+                ], 
+                "properties": {
+                    "index": 0, 
+                    "noteIndex": 0
+                }
+            }, 
+            [], 
+            []
+        ], 
+        [
+            {
+                "citationID": "1s6a3fqtgr", 
+                "citationItems": [
+                    {
+                        "id": "597", 
+                        "label": "page"
+                    }, 
+                    {
+                        "id": "576", 
+                        "label": "page"
+                    }
+                ], 
+                "properties": {
+                    "index": 1, 
+                    "noteIndex": 0, 
+                    "unsorted": true
+                }
+            }, 
+            [
+                [
+                    "10gk1bpdes", 
+                    0
+                ]
+            ], 
+            []
+        ]
+    ], 
+    "csl": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<style xmlns=\"http://purl.org/net/xbiblio/csl\" class=\"in-text\" version=\"1.0\" demote-non-dropping-particle=\"sort-only\">\n   <info>\n      <title>American Sociological Association</title>\n      <id>http://www.zotero.org/styles/asa</id>\n      <link href=\"http://www.zotero.org/styles/asa\" rel=\"self\"/>\n      <author>\n         <name>Julian Onions</name>\n         <email>julian.onions@gmail.com</email>\n      </author>\n      <category citation-format=\"author-date\"/>\n      <category field=\"sociology\"/>\n      <updated>2010-07-26T02:21:30+00:00</updated>\n      <summary>The ASA style.</summary>\n      <link href=\"http://www.asanet.org/Quick%20Style%20Guide.pdf\" rel=\"documentation\"/>\n      <rights>This work is licensed under a Creative Commons Attribution-Share Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/</rights>\n   </info>\n   <macro name=\"editor\">\n      <names variable=\"editor\">\n         <label form=\"verb\" text-case=\"lowercase\" suffix=\" \"/>\n         <name and=\"text\" delimiter=\", \"/>\n      </names>\n   </macro>\n   <macro name=\"series-editor\">\n      <names variable=\"original-author\">\n         <label form=\"short\" text-case=\"capitalize-first\" suffix=\". \" strip-periods=\"true\"/>\n         <name and=\"text\" delimiter=\", \"/>\n      </names>\n   </macro>\n   <macro name=\"anon\">\n      <text term=\"anonymous\" form=\"short\" text-case=\"capitalize-first\" strip-periods=\"true\"/>\n   </macro>\n   <macro name=\"author\">\n      <names variable=\"author\">\n         <name and=\"text\" name-as-sort-order=\"first\" sort-separator=\", \" delimiter=\", \" delimiter-precedes-last=\"always\"/>\n         <label form=\"short\" prefix=\", \" suffix=\".\" text-case=\"lowercase\" strip-periods=\"true\"/>\n         <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <text macro=\"anon\"/>\n         </substitute>\n      </names>\n   </macro>\n   <macro name=\"author-short\">\n      <names variable=\"author\">\n         <name form=\"short\" and=\"text\" delimiter=\", \" initialize-with=\". \"/>\n         <substitute>\n            <names variable=\"editor\"/>\n            <names variable=\"translator\"/>\n            <text macro=\"anon\"/>\n         </substitute>\n      </names>\n   </macro>\n   <macro name=\"access\">\n      <group>\n         <text term=\"retrieved\" text-case=\"capitalize-first\" suffix=\" \"/>\n         <date variable=\"accessed\">\n            <date-part name=\"month\" suffix=\" \"/>\n            <date-part name=\"day\" suffix=\", \"/>\n            <date-part name=\"year\"/>\n         </date>\n         <group prefix=\" (\" suffix=\")\">\n            <text variable=\"URL\"/>\n         </group>\n      </group>\n   </macro>\n   <macro name=\"title\">\n      <choose>\n         <if type=\"thesis\">\n            <text variable=\"title\"/>\n         </if>\n         <else-if type=\"bill book graphic legal_case motion_picture report song\" match=\"any\">\n            <text variable=\"title\" font-style=\"italic\"/>\n         </else-if>\n         <else>\n            <text variable=\"title\" quotes=\"true\"/>\n         </else>\n      </choose>\n   </macro>\n   <macro name=\"publisher\">\n      <group delimiter=\": \">\n         <text variable=\"publisher-place\"/>\n         <text variable=\"publisher\"/>\n      </group>\n   </macro>\n   <macro name=\"year-date\">\n      <choose>\n         <if variable=\"issued\">\n            <date variable=\"issued\">\n               <date-part name=\"year\"/>\n            </date>\n         </if>\n         <else>\n            <text term=\"no date\" form=\"short\"/>\n         </else>\n      </choose>\n   </macro>\n   <macro name=\"day-month\">\n      <date variable=\"issued\">\n         <date-part name=\"month\"/>\n         <date-part name=\"day\" prefix=\" \"/>\n      </date>\n   </macro>\n   <macro name=\"pages\">\n      <label variable=\"page\" form=\"short\" suffix=\". \" text-case=\"capitalize-first\" strip-periods=\"true\"/>\n      <text variable=\"page\"/>\n   </macro>\n   <macro name=\"edition\">\n      <choose>\n         <if is-numeric=\"edition\">\n            <group delimiter=\" \">\n               <number variable=\"edition\" form=\"ordinal\"/>\n               <text term=\"edition\" form=\"short\" suffix=\".\" strip-periods=\"true\"/>\n            </group>\n         </if>\n         <else>\n            <text variable=\"edition\" suffix=\".\"/>\n         </else>\n      </choose>\n   </macro>\n   <citation et-al-min=\"4\" et-al-use-first=\"1\" et-al-subsequent-min=\"3\" et-al-subsequent-use-first=\"1\" disambiguate-add-year-suffix=\"true\" disambiguate-add-names=\"true\" disambiguate-add-givenname=\"true\" collapse=\"year\">\n      <layout prefix=\"(\" suffix=\")\" delimiter=\"; \">\n         <group delimiter=\":\">\n            <group delimiter=\" \">\n               <text macro=\"author-short\"/>\n               <text macro=\"year-date\"/>\n            </group>\n            <text variable=\"locator\"/>\n         </group>\n      </layout>\n   </citation>\n   <bibliography hanging-indent=\"true\" et-al-min=\"6\" et-al-use-first=\"1\">\n      <sort>\n         <key macro=\"author\"/>\n         <key variable=\"title\"/>\n      </sort>\n      <layout suffix=\".\">\n         <group delimiter=\" \">\n            <text macro=\"author\" suffix=\".\"/>\n            <text macro=\"year-date\" suffix=\".\"/>\n         </group>\n         <choose>\n            <if type=\"article-newspaper article-magazine\" match=\"any\">\n               <group delimiter=\" \">\n                  <text macro=\"title\" prefix=\" \" suffix=\".\"/>\n               </group>\n               <group prefix=\" \" delimiter=\", \">\n                  <text variable=\"container-title\" font-style=\"italic\"/>\n                  <text macro=\"day-month\"/>\n                  <text variable=\"edition\"/>\n                  <text variable=\"page\"/>\n               </group>\n            </if>\n            <else-if type=\"thesis\">\n               <text macro=\"title\" prefix=\" \" suffix=\".\" quotes=\"true\"/>\n               <group prefix=\" \" delimiter=\", \">\n                  <text macro=\"edition\"/>\n                  <text macro=\"editor\" suffix=\".\"/>\n                  <text variable=\"genre\"/>\n                  <text macro=\"publisher\"/>\n               </group>\n            </else-if>\n            <else-if type=\"bill book graphic legal_case motion_picture report song\" match=\"any\">\n               <group delimiter=\" \">\n                  <text macro=\"title\" prefix=\" \" suffix=\".\"/>\n                  <text macro=\"edition\"/>\n                  <text macro=\"editor\" suffix=\".\"/>\n                  <text macro=\"publisher\"/>\n               </group>\n            </else-if>\n            <else-if type=\"chapter paper-conference\" match=\"any\">\n               <group delimiter=\" \">\n                  <text macro=\"title\" prefix=\" \" suffix=\".\"/>\n                  <group delimiter=\", \" suffix=\".\">\n                     <group delimiter=\" \">\n                        <text macro=\"pages\"/>\n                        <text term=\"in\" text-case=\"lowercase\"/>\n                        <text variable=\"container-title\" font-style=\"italic\"/>\n                     </group>\n                     <text variable=\"volume\" prefix=\"vol. \"/>\n                     <text variable=\"collection-title\" font-style=\"italic\"/>\n                     <text macro=\"editor\"/>\n                  </group>\n                  <text macro=\"publisher\"/>\n               </group>\n            </else-if>\n            <else>\n               <group suffix=\".\">\n                  <text macro=\"title\" prefix=\" \"/>\n                  <text macro=\"editor\" prefix=\" \"/>\n               </group>\n               <group prefix=\" \" suffix=\".\" delimiter=\" \">\n                  <text variable=\"container-title\" font-style=\"italic\"/>\n                  <group delimiter=\":\">\n                     <group>\n                        <text variable=\"volume\"/>\n                        <text variable=\"issue\" prefix=\"(\" suffix=\")\"/>\n                     </group>\n                     <text variable=\"page\"/>\n                  </group>\n               </group>\n            </else>\n         </choose>\n         <text prefix=\" \" macro=\"access\" suffix=\".\"/>\n      </layout>\n   </bibliography>\n</style>", 
+    "input": [
+        {
+            "DOI": "10.1177/1368431011412349", 
+            "abstract": "Different notions of multiple rationalities have recently been applied to describe the phenomena of co-existence of competing rationalities in organizations. These include institutional pluralism, institutional logics, competing rationalities and pluralistic contexts. The French pragmatic sociologists Luc Boltanski and Laurent Thévenot have contributed to this line of research with a sophisticated theoretical framework of orders of worth, which has been applied in an increasing number of empirical studies. This article explores how the order of worth framework has been applied to empirical studies of organizations. First, I summarize the basic ideas of the framework, stressing the aspects of special relevance for studies of organizations. Second, I review the empirical studies focusing on the coexistence of competing orders of worth in organizations showing that the order of worth framework primarily has been related to three main themes in organizational research: non-profit and co-operative organizations, inter-organizational co-operation, and organizational change. Third, I discuss how the pragmatic, process-oriented aspect of the research program, focusing on the intertwining of values and action in various forms of ‘justification work’, has been translated into empirical studies. I argue that even if highly interesting empirical studies have begun to appear on the pragmatic aspects of the order of worth program, empirical studies of ‘justification work’ may be a potentially very promising focus for future empirical studies.", 
+            "accessed": {
+                "date-parts": [
+                    [
+                        2011, 
+                        8, 
+                        19
+                    ]
+                ]
+            }, 
+            "author": [
+                {
+                    "family": "Jagd", 
+                    "given": "Søren"
+                }
+            ], 
+            "container-title": "European Journal of Social Theory", 
+            "id": 576, 
+            "issue": "3", 
+            "issued": {
+                "date-parts": [
+                    [
+                        2011
+                    ]
+                ]
+            }, 
+            "page": "343 -359", 
+            "title": "Pragmatic sociology and competing orders of worth in organizations", 
+            "type": "article-journal", 
+            "volume": "14"
+        }, 
+        {
+            "author": [
+                {
+                    "family": "Boltanski", 
+                    "given": "Luc"
+                }, 
+                {
+                    "family": "Thévenot", 
+                    "given": "Laurent"
+                }
+            ], 
+            "container-title": "European Journal of Social Theory", 
+            "id": 651, 
+            "issue": "3", 
+            "issued": {
+                "date-parts": [
+                    [
+                        1999
+                    ]
+                ]
+            }, 
+            "page": "359-377", 
+            "title": "The Sociology of Critical Capacity", 
+            "type": "article-journal", 
+            "volume": "2"
+        }, 
+        {
+            "DOI": "DOI 10.1177/13684310122225235", 
+            "author": [
+                {
+                    "family": "Thévenot", 
+                    "given": "Laurent"
+                }
+            ], 
+            "container-title": "European Journal of Social Theory", 
+            "id": 597, 
+            "issue": "4", 
+            "issued": {
+                "date-parts": [
+                    [
+                        2001, 
+                        11, 
+                        1
+                    ]
+                ]
+            }, 
+            "page": "405 -425", 
+            "title": "Organized Complexity", 
+            "type": "article-journal", 
+            "volume": "4"
+        }
+    ], 
+    "mode": "citation", 
+    "result": "..[0] (Jagd 2011:347)\n>>[1] (Thévenot 2001; Jagd 2011)"
+}
