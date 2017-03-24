@@ -159,6 +159,7 @@ var chicago_author_date = `
             <text variable="container-title" font-style="italic"/>
             <group prefix=" ">
               <text variable="volume" font-weight="bold"/>
+              <text variable="issue" prefix="(" suffix=")"/>
             </group>
             <text variable="page" prefix=": "/>
           </group>
@@ -284,6 +285,7 @@ function parse_reference(string) {
   citation.parts['JOURNAL'] = [];
   citation.parts['VOLUME-PAGINATION'] = [];
    var result = null;
+   
 
 if (citation.parts['VOLUME-PAGINATION'].length == 0) {
 	result = string.match(/''\]\](\s+\((\d+)\))?,?\s+(''')?(\d+)(''')?(\((.*)\))?:\s*(\d+)([-|–](\d+))?/);
@@ -380,8 +382,28 @@ citation.page = citation.spage;
 		}       
     //emit(i, result[i]);
 }    
-    
+  }
+  
+  
+  // journal
+  if (citation.parts['JOURNAL'].length == 0) {
+    result = string.match(/''(.*)''[\.|,]?\s+('''(\d+)''':\s*(\d+)[-|–](\d+))/);
+    //for (var i in result) {
+    if (result) {
 
+      citation.parts['JOURNAL'].push(result[1]);
+      citation.parts['VOLUME-PAGINATION'].push(result[3]);
+
+      citation.journal = result[1];
+		citation.volume = result[3];
+		citation.spage = result[4];
+		citation.page = citation.spage;
+		if (result[5]) {
+			citation.epage = result[5];  
+			citation.page += '-' + citation.epage;
+		}       
+    //emit(i, result[i]);
+}      
   }
   
   	// Journal with ISSN
@@ -492,8 +514,27 @@ if (!citation.parts.TITLE && citation.parts.YEAR && citation.parts['JOURNAL'].le
    	}
    
   }
+  
+  
 
 	// cleanup
+	
+	if (citation.title) {
+    	//citation.title.replace(/\s''/g, ' <i>');
+    	//citation.title.replace(/\\'\\'(\b)/g, '</i>$1');
+    	
+    	//r = citation.title.match(/([\s|,|\.])''/g);
+    	//if (r) { alert(JSON.stringify(r)); }
+    	
+    	// italics
+    	citation.title = citation.title.replace(/([\s|,|\.])''/g, '$1<i>');
+    	citation.title = citation.title.replace(/^''/g, '<i>');
+    	citation.title = citation.title.replace(/''([\s|,|\.])/g, '</i>$1');
+    	citation.title = citation.title.replace(/''$/g, '</i>');
+ 	 }
+	
+	
+	
 	if (1) {
   delete citation.parts;
   }
@@ -587,15 +628,10 @@ console.log(citeproc.makeBibliography()[ 1 ]);
 		<h2>Wikispecies text</h2>
 			<!-- JSON for data object goes below -->
 			<textarea id="json" style="width:100%;background-color:#224FBC;color:#FFFF66;" rows="10">
-* {{auth|A.|Ross|r}} 1971: A new genus of Chthamalidae (Cirripedia) from the southeastern Pacific island San Ambrosio. [[ISSN 0080-5947|''Transactions of San Diego society of Natural History'']], '''16'''(11): 265-278. [http://biodiversitylibrary.org/page/35167160 BHL] <includeonly>[http://species.wikimedia.org/wiki/Template:Ross,_1971 reference page]</includeonly>&nbsp;<noinclude>
-** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference]
-==Nomenclatural acts==
-* Date of publication: 26 October, 1971
-* {{ZooBankRef|02FB876F-1E25-44C5-BE29-8BA1B378B432}}
-===new names (2)===
-* ''[[Jehlius]]''
-* ''[[Jehlius gilmorei]]''
-[[Category:Reference templates]]</noinclude>
+* {{auth|M.-J.|Belon|r}} 1884: Révision des Lathridiidae de Nouvelle-Zélande. ''Revue d'entomologie'', '''3''': 246–266. [http://biodiversitylibrary.org/page/25445010 BHL] <includeonly>[http://species.wikimedia.org/wiki/Template:Belon,_1884b reference page]</includeonly>&nbsp;<noinclude>
+** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference]</noinclude><noinclude>
+[[Category:Reference templates]]
+</noinclude>
 			
 			</textarea>
 	</div>
