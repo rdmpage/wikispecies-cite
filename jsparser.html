@@ -274,6 +274,72 @@ function output(data) {
 	}
 }
  	
+ 	
+//----------------------------------------------------------------------------------------
+// Parse the template from hell (Zootaxa)
+function parse_zootaxa(string, citation) {
+
+	citation.journal = 'Zootaxa';
+	citation.issn = ['1175-5326'];
+	console.log("string="+string);
+	result = string.match(/zootaxa\|(\d+)\|(\d+)\|(\d+)\|(\d+)(\|(\d+))?(\|(\d+))?(\|(\d+))?/);
+	
+			// For years 2013 and above use: <tt>&#123;{zootaxa|year|volume number|fascicle number|start page|end page|article number|PDF}}</tt>
+			// for open access [<tt>PDFo</tt> for no preview].<br /> For years 2012 and below use: <tt>&#123;{zootaxa|year|volume number|start page|end page}}</tt>.
+	
+	
+	if (result) {
+		console.log('zootaxa=' + JSON.stringify(result));
+		citation.parts['JOURNAL'].push('{{' + result[0] + '}}');
+		
+		//alert(result[2]);
+		
+		switch (result[1]) {
+			case "2009":
+				citation.volume = result[2];
+				citation.spage = result[3];
+				citation.page = citation.spage;
+				citation.epage = result[4];  
+				citation.page += '-' + citation.epage;
+				
+				// PDF link to abstract
+				// http://mapress.com/zootaxa/{{{1}}}/f/z0{{{2}}}p{{{4}}}f.pdf
+				citation.pdf = 'http://www.mapress.com/zootaxa/' + result[1] + '/f/z0' + citation.volume + 'p' + ("000" + citation.epage).slice(-3) + 'f.pdf';
+				
+				// PDF to actual article (there's a switch for open access or not...)
+				
+				
+				break;
+				
+			// {{zootaxa|year|volume number|fascicle number|start page|end page|article number|PDF}}
+			case '2014':
+			case '2015':
+			case '2016':
+			case '2017':
+				citation.volume = result[2];
+				citation.issue = result[3];
+				citation.spage = result[4];
+				citation.page = citation.spage;
+				citation.epage = result[6];  
+				citation.page += '-' + citation.epage;
+				citation['article-number'] = result[8];
+				
+				// DOI
+				citation.DOI = '10.11646/zootaxa.' + citation.volume + '.' + citation.issue + '.' + citation['article-number'];
+				break;
+				
+			
+			
+		
+			default:
+				break;
+		}
+	}
+	
+	
+
+	return citation;
+}
 
 //----------------------------------------------------------------------------------------
 function parse_reference(string) {
@@ -406,6 +472,59 @@ citation.page = citation.spage;
 }      
   }
   
+  
+  // journal
+  // simple journal in italics with volume not in bold
+  // e.g. ''Proceedings of the Zoological Society of London'' 1896: 1012–1028.
+  if (citation.parts['JOURNAL'].length == 0) {
+    result = string.match(/''(.*)''[\.|,]?\s+((\d+):\s*(\d+)[-|–](\d+))/);
+    //for (var i in result) {
+    if (result) {
+
+      citation.parts['JOURNAL'].push(result[1]);
+      citation.parts['VOLUME-PAGINATION'].push(result[3]);
+
+      citation.journal = result[1];
+		citation.volume = result[3];
+		citation.spage = result[4];
+		citation.page = citation.spage;
+		if (result[5]) {
+			citation.epage = result[5];  
+			citation.page += '-' + citation.epage;
+		}       
+    //emit(i, result[i]);
+}      
+  }
+   // journal
+  // * {{aut|Thomas, O.}} 1904. On mammals from northern Angola collected by Dr. W. J. Ansorge. ''Annals and Magazine of Natural History'' ser 7, 13: 405–421.
+  if (citation.parts['JOURNAL'].length == 0) {
+    result = string.match(/''(.*)''[\.|,]?\s+ser\.?\s+(\d+),?\s+((\d+):\s*(\d+)[-|–](\d+))/);
+    //for (var i in result) {
+    if (result) {
+
+      citation.parts['JOURNAL'].push(result[1]);
+      citation.parts['VOLUME-PAGINATION'].push(result[4]);
+
+      citation.journal = result[1];
+      
+		if (result[2]) {
+			citation.series = result[2];  
+			citation.journal += ' series ' + citation.series;
+		}      
+      
+      
+		citation.volume = result[4];
+		citation.spage = result[5];
+		citation.page = citation.spage;
+		if (result[6]) {
+			citation.epage = result[6];  
+			citation.page += '-' + citation.epage;
+		}       
+    //emit(i, result[i]);
+}      
+  }
+  
+  
   	// Journal with ISSN
   	if (citation.parts['JOURNAL'].length == 0) {
 		result = string.match(/\[\[ISSN ([0-9]{4}-[0-9]{3}([0-9]|X))\|(?:\'\')(.*)(?:\'\')]\]/);
@@ -449,7 +568,7 @@ citation.page = citation.spage;
       citation.DOI = match[1];
     }
 
-    if (match = result[i].match(/a\|(.*)\|(?:.*)/)) {
+    if (match = result[i].match(/^a\|(.*)\|(?:.*)/)) {
       var name = {};
       name.literal = match[1];
       citation.author.push(name);
@@ -473,7 +592,13 @@ citation.page = citation.spage;
       citation.author.push(name);
       citation.parts['AUTHOR'].push(match[0]);
        console.log(match[1]);
-    }    
+    }   
+    
+ if (match = result[i].match(/zootaxa\|(.*)$/)) {
+      //alert('zootaxa');
+       console.log("match="+JSON.stringify(match));
+      citation = parse_zootaxa(match[0], citation);
+    }        
 
 
     
@@ -529,8 +654,9 @@ if (!citation.parts.TITLE && citation.parts.YEAR && citation.parts['JOURNAL'].le
     	// italics
     	citation.title = citation.title.replace(/([\s|,|\.])''/g, '$1<i>');
     	citation.title = citation.title.replace(/^''/g, '<i>');
-    	citation.title = citation.title.replace(/''([\s|,|\.])/g, '</i>$1');
+    	citation.title = citation.title.replace(/''([\s|,|\.|:])/g, '</i>$1');
     	citation.title = citation.title.replace(/''$/g, '</i>');
+    	citation.title = citation.title.replace(/\.$/g, '');
  	 }
 	
 	
@@ -556,6 +682,8 @@ if (!citation.parts.TITLE && citation.parts.YEAR && citation.parts['JOURNAL'].le
   citation.type = "article-journal";
   
 console.log(JSON.stringify(citation, null, 2));  
+
+output(citation);
   
 //bibdata={"ITEM-1": 
 //{"id": "ITEM-1", type: "journal-article", title: " Pliopontos littoralis , un noveau Platanistidae Cetacea du Pliocène de la côte pèruvienne", author: [{literal: "C De Muizon"}], "container-title": "C R Biol", volume: "296", issue: "296", page: "625-628", issued: {"date-parts": [["1983"]]}}};
@@ -611,7 +739,7 @@ $('#csl').html(citeproc.makeBibliography()[ 1 ][0]);
 console.log(citeproc.makeBibliography()[ 1 ]);
   
 
-  output(citation);
+  //output(citation);
 
 }
 
@@ -628,11 +756,7 @@ console.log(citeproc.makeBibliography()[ 1 ]);
 		<h2>Wikispecies text</h2>
 			<!-- JSON for data object goes below -->
 			<textarea id="json" style="width:100%;background-color:#224FBC;color:#FFFF66;" rows="10">
-* {{auth|M.-J.|Belon|r}} 1884: Révision des Lathridiidae de Nouvelle-Zélande. ''Revue d'entomologie'', '''3''': 246–266. [http://biodiversitylibrary.org/page/25445010 BHL] <includeonly>[http://species.wikimedia.org/wiki/Template:Belon,_1884b reference page]</includeonly>&nbsp;<noinclude>
-** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference]</noinclude><noinclude>
-[[Category:Reference templates]]
-</noinclude>
-			
+* {{auth|A.|Anker|r}}; {{aut|Hurt, C.}}; {{aut|Knowlton, N.}} 2009: Description of cryptic taxa within the ''Alpheus bouvieri'' A. Milne-Edwards, 1878 and ''A. hebes'' Kim and Abele, 1988 species complexes (Crustacea: Decapoda: Alpheidae). {{zootaxa|2009|2153|1|23}}
 			</textarea>
 	</div>
 			<br />
