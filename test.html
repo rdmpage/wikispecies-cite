@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+</head>
+<body>
+
+<script>
+
+      function run_tests () {
+      
+      	var keys = ['author', 'title', 'container-title', 'volume', 'issue', 'page', 'year', 'DOI'];
+        
+        var tests = [];
+        
+        // a test
+        tests.push({
+          input : "* {{aut|Bleeker, P.}} 1851. Visschen van Billiton. ''Natuurkundig Tijdschrift voor Nederlandsch Indië'' 1: 478–479.",
+          output : {
+  "author": [
+    {
+      "literal": "Bleeker, P."
+    }
+  ],
+  "journal": "Natuurkundig Tijdschrift voor Nederlandsch Indië",
+  "volume": "1",
+  "spage": "478",
+  "page": "478-479",
+  "epage": "479",
+  "year": "1851",
+  "title": "Visschen van Billiton",
+  "issued": {
+    "date-parts": [
+      [
+        "1851"
+      ]
+    ]
+  },
+  "container-title": "Natuurkundig Tijdschrift voor Nederlandsch Indië",
+  "id": "ITEM-1",
+  "type": "article-journal"
+}
+    
+        });
+        
+        var parsing_result = {
+  "author": [
+    {
+      "literal": "Bleeker, P."
+    }
+  ],
+  "journal": "Natuurkundig Tijdschrift voor Nederlandsch Indië",
+  "volume": "1",
+  "spage": "478",
+  "page": "478-479",
+  "epage": "479",
+  "year": "1851",
+  "title": "Visschen van Billiton",
+  "issued": {
+    "date-parts": [
+      [
+        "1851"
+      ]
+    ]
+  },
+  "container-title": "Natuurkundig Tijdschrift voor Nederlandsch Indië",
+  "id": "ITEM-1",
+  "type": "article-journal"
+};
+          
+        
+        //alert(tests[0].output.journal);
+        
+        for (var k in keys) {
+        	
+        		console.log(keys[k]);
+        }
+        
+        
+        var i = 0;
+        for (var j in tests[i]) {
+        	var ok = true;
+        
+        	for (var k in keys) {
+        	
+        		var key = keys[k];
+        		var test_value = tests[i][j][keys[k]];
+        		
+        		if (test_value) {
+	        		if (typeof test_value === 'object') {
+    	    			test_value = JSON.stringify(test_value);
+        			}
+        			
+        			if (parsing_result[key]) {
+        				parsed_value = parsing_result[key];
+						if (typeof parsed_value === 'object') {
+    	    				parsed_value = JSON.stringify(parsed_value);
+        				}  
+        				
+        				// compare
+        				console.log(test_value + ' <=> ' + parsed_value);	
+        				
+        				if (test_value != parsed_value) {
+        					ok = false; // values are different, so objects are not the same
+        				}
+        			} else {
+        				ok = false; // parsed result doesn't have this key, so objects are different
+        			}
+        		}
+        	}
+			if (ok) {
+				console.log("objects are the same");
+			} else {
+				console.log("objects are different");
+			}        	
+        }
+    }
+       
+ 
+    
+    run_tests();
+    
+    </script>
+
+
+
+</script>
+
+
+</body>
+</html>

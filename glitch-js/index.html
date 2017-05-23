@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<title>Wikispecies to CSL JSON reference parser </title>
+		<meta charset="UTF-8"/>
+		<script src="jquery.js"></script>
+		
+		<script src="xmldom.js"></script>
+		<script src="citeproc.js"></script>
+		<script src="locale.js"></script>
+		<script src="style.js"></script>
+	
+		<script src="matchRecursive.js"></script>
+
+		<!-- the actual parser -->
+		<script src="parse.js"></script>
+		
+	</head>
+<body>
+
+<h1>Wikispecies to CSL JSON reference parser</h1>
+
+<div>
+	<div style="width:100%;height:auto;">
+		<h2>Wikispecies text</h2>
+			<!-- JSON for data object goes below -->
+			<textarea id="json" style="width:100%;background-color:#224FBC;color:#FFFF66;" rows="10">
+* {{aut|Bidzilya, O. & O. Karsholt}} 2008: New data on Anomologini from Palaearctic Asia (Gelechiidae). ''Nota Lepidopterologica'' '''31 (2)''': 199–213.
+			</textarea>
+	</div>
+			<br />
+			<button onclick="convert()">Convert Wikispecies to JSON</button>
+	</div>
+	<div style="clear:both;"></div>
+	
+	<h2>Formatted</h2>
+	<div id="csl"></div>
+
+	<h2>JSON</h2>
+	<div id="output" style="font-family:fixed;width:100%;white-space:pre;background-color:#333;color:white;overflow:auto;"></div>
+</div>	
+
+<script>		
+//----------------------------------------------------------------------------------------
+function couchdb(doc) {
+  	parse_reference(doc.text);
+}
+
+		
+//----------------------------------------------------------------------------------------
+function convert() {
+    var doc = {};
+	doc.text = $('#json').val();
+	
+	couchdb(doc);
+}
+
+convert();
+
+	
+</script>		
+			
+</div>
+</body>
+</html>				

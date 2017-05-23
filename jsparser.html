@@ -342,6 +342,53 @@ function parse_zootaxa(string, citation) {
 }
 
 //----------------------------------------------------------------------------------------
+// {{AEMNP|53|2|633|648}}
+function parse_aemnp(string, citation) {
+
+	citation.journal = 'Acta Entomologica Musei Nationalis Pragae';
+	citation.issn = ['0374-1036'];
+	console.log("string="+string);
+	result = string.match(/AEMNP\|(\d+)\|(\d+)\|(\d+)\|(\d+)/);
+	
+	if (result) {
+		console.log('AEMNP=' + JSON.stringify(result));
+		citation.parts['JOURNAL'].push('{{' + result[0] + '}}');
+		
+		citation.volume = result[1];
+		citation.issue = result[2];
+		citation.spage = result[3];
+		citation.page = citation.spage;
+		citation.epage = result[4];  
+		citation.page += '-' + citation.epage;
+		
+		// 53_2/53_2_633.pdf
+		citation.pdf = 'http://www.aemnp.eu/PDF/' + citation.volume + '_' + citation.issue + '/' + citation.volume + '_' + citation.issue + '_' + citation.spage + '.pdf';
+		
+	}
+
+	return citation;
+}
+	
+		
+
+
+//----------------------------------------------------------------------------------------
+// parse a wiki link of the form [[<name>|<link>]]
+function parse_link(string) {
+	var link = {};
+	
+	var result = string.match(/^\[\[(.*)\|(.*)\]\]$/);
+
+	if (result) {
+		link.name = result[1];
+		link.link = result[2];
+	}
+	
+	return link;
+}
+
+
+//----------------------------------------------------------------------------------------
 function parse_reference(string) {
   // citation object
   var citation = {};
@@ -392,6 +439,49 @@ if (citation.parts['VOLUME-PAGINATION'].length == 0) {
 		citation.page = citation.spage;
 		if (result[10]) {
 			citation.epage = result[10];  
+			citation.page += '-' + citation.epage;
+		}  
+	//emit(i, result[i]);
+	}
+}
+
+if (citation.parts['VOLUME-PAGINATION'].length == 0) {
+// '']], 34, 152–178.
+	result = string.match(/''\]\],\s*(.*),\s*(\d+)([-|–](\d+))?/);
+
+	if (result) {
+		console.log(JSON.stringify(result));
+
+		citation.parts['VOLUME-PAGINATION'].push(result[0]);
+
+		citation.volume = result[1];
+		citation.spage = result[2];
+		citation.page = citation.spage;
+		if (result[4]) {
+			citation.epage = result[4];  
+			citation.page += '-' + citation.epage;
+		}  
+	//emit(i, result[i]);
+	}
+}
+
+
+if (citation.parts['VOLUME-PAGINATION'].length == 0) {
+	result = string.match(/''([^'][^']+)''\s+'''(\d+)\s*\((\d+)\)''':\s*(\d+)([-|–](\d+))?/);
+
+	if (result) {
+		console.log(JSON.stringify(result));
+
+		citation.parts['JOURNAL'].push(result[1]);
+		citation.parts['VOLUME-PAGINATION'].push(result[0]);
+
+		citation.journal = result[1];
+		citation.volume = result[2];
+		citation.issue = result[3];
+		citation.spage = result[4];
+		citation.page = citation.spage;
+		if (result[6]) {
+			citation.epage = result[6];  
 			citation.page += '-' + citation.epage;
 		}  
 	//emit(i, result[i]);
@@ -579,7 +669,18 @@ citation.page = citation.spage;
 
     if (match = result[i].match(/aut\|(.*)/)) {
       var name = {};
-      name.literal = match[1];
+      
+      var link = parse_link(match[1]);
+      if (link.name) {
+      	name.literal = link.name;
+      	name.WIKISPECIES = link.link;
+      } else {
+	      name.literal = match[1];
+    	}  
+      
+      
+      
+      
       citation.author.push(name);
       citation.parts['AUTHOR'].push(match[0]);
        console.log(match[1]);
@@ -600,6 +701,11 @@ citation.page = citation.spage;
       citation = parse_zootaxa(match[0], citation);
     }        
 
+ if (match = result[i].match(/AEMNP\|(.*)$/)) {
+      //alert('zootaxa');
+       console.log("match="+JSON.stringify(match));
+      citation = parse_aemnp(match[0], citation);
+    }        
 
     
   }
@@ -652,16 +758,16 @@ if (!citation.parts.TITLE && citation.parts.YEAR && citation.parts['JOURNAL'].le
     	//if (r) { alert(JSON.stringify(r)); }
     	
     	// italics
-    	citation.title = citation.title.replace(/([\s|,|\.])''/g, '$1<i>');
+    	citation.title = citation.title.replace(/([\s|,|\.|\(])''/g, '$1<i>');
     	citation.title = citation.title.replace(/^''/g, '<i>');
-    	citation.title = citation.title.replace(/''([\s|,|\.|:\)])/g, '</i>$1');
+    	citation.title = citation.title.replace(/''([\s|,|\.|:|\)])/g, '</i>$1');
     	citation.title = citation.title.replace(/''$/g, '</i>');
     	citation.title = citation.title.replace(/\.$/g, '');
  	 }
 	
 	
 	
-	if (1) {
+	if (0) {
   delete citation.parts;
   }
   
@@ -756,18 +862,7 @@ console.log(citeproc.makeBibliography()[ 1 ]);
 		<h2>Wikispecies text</h2>
 			<!-- JSON for data object goes below -->
 			<textarea id="json" style="width:100%;background-color:#224FBC;color:#FFFF66;" rows="10">
-* {{a|Li Shi|Shi, L.}}, {{a|Stephen D. Gaimari|Gaimari, S.D.}} & {{a|Ding Yang|Yang, D.}} 2015. Five new species of subgenus ''Plesiominettia'' (Diptera, Lauxaniidae, ''Minettia'') in southern China, with a key to known species. [[ISSN 1313-2989|''Zookeys'']], '''520''': 61-86. {{doi|10.3897/zookeys.520.9558}} [http://zookeys.pensoft.net/articles.php?id=5985 Full article] <includeonly>[http://species.wikimedia.org/wiki/Template:Shi,_Gaimari_%26_Yang,_2015 reference page]</includeonly>&nbsp;<noinclude>
-** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference]
-==Nomenclatural acts==
-* Date of publication: 16 September 2015
-* {{ZooBankRef|46DE2752-DBC8-4B73-B3DE-96C72F862642}}
-===New names (5)===
-* ''[[Minettia flavoscutellata|Minettia (Plesiominettia) flavoscutellata]]''
-* ''[[Minettia longaciculiformis|Minettia (Plesiominettia) longaciculiformis]]''
-* ''[[Minettia nigrantennata|Minettia (Plesiominettia) nigrantennata]]''
-* ''[[Minettia tridentata|Minettia (Plesiominettia) tridentata]]''
-* ''[[Minettia zhejiangica|Minettia (Plesiominettia) zhejiangica]]''
-[[Category:Reference templates]]</noinclude>
+* {{aut|Bidzilya, O. & O. Karsholt}} 2008: New data on Anomologini from Palaearctic Asia (Gelechiidae). ''Nota Lepidopterologica'' '''31 (2)''': 199–213.
 			</textarea>
 	</div>
 			<br />
