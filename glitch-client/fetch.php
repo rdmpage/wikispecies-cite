@@ -41,6 +41,14 @@ $title = 'Campylospermum_serratum'; // lots of references in various forms
 
 $title = 'Hugh_Bryan_Spencer_Womersley';
 $title = 'Gerald_Thompson_Kraft';
+$title = 'Nothofagus';
+$title = 'Fuscospora';
+
+$title = 'Trachylepis_atlantica';
+$title = 'Trachylepis';
+
+$title = 'Hapalomys';
+$title = 'Viatcheslav_V._Rozhnov';
 
 $citations = array();
 
@@ -95,61 +103,78 @@ while (count($queue) > 0)
 					$counter++;
 				
 					$citation = json_decode($json);
-					$citations[] = $citation;
 					
-					// default identifier is combination of Wikispecies age and counter
-					$identifier = $title . '_' . $counter;
+					$ignore = true;
 					
-					// if we have a template then we have a URL for this reference
-					if (isset($citation->WIKISPECIES))
+					if (isset($citation->unstructured))
 					{
-						$identifier = $citation->WIKISPECIES;
-					}					
-					
-					$go = true;
-	
-					// Check whether this record already exists (i.e., have we done this object already?)
-					$exists = $couch->exists($identifier);
-	
-					if ($exists)
-					{
-						echo "$identifier Exists\n";
-						$go = false;
-		
-						if ($force)
+						$ignore = false;
+						if ($citation->unstructured == '')
 						{
-							echo "[forcing]\n";
-							$couch->add_update_or_delete_document(null, $identifier, 'delete');
-							$go = true;		
+							$ignore = true;
 						}
 					}
 
-					if ($go)
-					{
-						// Do we want to attempt to add any identifiers here, such as DOIs?
+					if (!$ignore)
+					{					
 					
-						// couchdb
-						$doc = new stdclass;
-
-						$doc->_id = $identifier;
-
-						// By default message is empty and has timestamp set to "now"
-						// This means it will be at the end of the queue of things to add
-						$doc->{'message-timestamp'} = date("c", time());
-						$doc->{'message-modified'} 	= $doc->{'message-timestamp'};
-						$doc->{'message-format'} 	= 'application/vnd.crossref-citation+json';
+						$citations[] = $citation;
 					
-						$doc->message = $citation;
-						$resp = $couch->send("PUT", "/" . $config['couchdb_options']['database'] . "/" . urlencode($doc->_id), json_encode($doc));
-						var_dump($resp);					
-					}					
+						// default identifier is combination of Wikispecies age and counter
+						$identifier = $title . '_' . $counter;
+					
+						// if we have a template then we have a URL for this reference
+						if (isset($citation->WIKISPECIES))
+						{
+							$identifier = $citation->WIKISPECIES;
+						}					
+					
+						$go = true;
+	
+						// Check whether this record already exists (i.e., have we done this object already?)
+						$exists = $couch->exists($identifier);
+	
+						if ($exists)
+						{
+							echo "$identifier Exists\n";
+							$go = false;
+		
+							if ($force)
+							{
+								echo "[forcing]\n";
+								$couch->add_update_or_delete_document(null, $identifier, 'delete');
+								$go = true;		
+							}
+						}
+
+						if ($go)
+						{
+							// Do we want to attempt to add any identifiers here, such as DOIs?
+					
+							// couchdb
+							$doc = new stdclass;
+
+							$doc->_id = $identifier;
+
+							// By default message is empty and has timestamp set to "now"
+							// This means it will be at the end of the queue of things to add
+							$doc->{'message-timestamp'} = date("c", time());
+							$doc->{'message-modified'} 	= $doc->{'message-timestamp'};
+							$doc->{'message-format'} 	= 'application/vnd.crossref-citation+json';
+					
+							$doc->message = $citation;
+						
+							$resp = $couch->send("PUT", "/" . $config['couchdb_options']['database'] . "/" . urlencode($doc->_id), json_encode($doc));
+							var_dump($resp);					
+						}					
+					}
 				}
 			}	
 		}		
 	}
 }
 
-//print_r($citations);
+print_r($citations);
 
 
 ?>
