@@ -5,6 +5,8 @@ Parsing citations on Wikispecies
 
 For discussion of citation formats on Wikispecies (and why it doesn’t use the Wikipedia cite template), see https://species.wikimedia.org/wiki/Wikispecies:Village_Pump#Citation_templates. There was also a poll on citation templates in Wikispecies, see https://species.wikimedia.org/wiki/Wikispecies:Village_Pump/Archive_33#Close_poll. The poll had 11 participants(!).
 
+See also [Citation templates, redux](https://species.wikimedia.org/w/index.php?title=Wikispecies:Village_Pump&direction=next&oldid=3330983#Citation_templates.2C_redux)
+
 Authors are often linked to a page in Wikispecies, and this page may in turn be linked to Wikidata, which can have other identifiers (e.g., ORCID, VIAF, ISNI, IPNI, etc.).
 
 ## WikiCite
