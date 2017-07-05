@@ -1,14 +1,21 @@
-# wikispecies-cite
-Parsing citations on Wikispecies
+# Parse Wikispecies references as a service
+This project provides a simple API to parse Wikispecies references. You can use the web interface, or call the API which returns the reference in CSL.
 
-[Wikispecies](https://species.wikimedia.org/wiki/Main_Page) has citations in a range of formats, including templates for individual references, authors, and journals. References may or may not have additional identifiers, such as DOIs, ZooBank UUIDs, links to BHL and Internet Archive, etc.
 
-For discussion of citation formats on Wikispecies (and why it doesn’t use the Wikipedia cite template), see https://species.wikimedia.org/wiki/Wikispecies:Village_Pump#Citation_templates. There was also a poll on citation templates in Wikispecies, see https://species.wikimedia.org/wiki/Wikispecies:Village_Pump/Archive_33#Close_poll. The poll had 11 participants(!).
+## Getting Started
+To test this project:
 
-See also [Citation templates, redux](https://species.wikimedia.org/w/index.php?title=Wikispecies:Village_Pump&direction=next&oldid=3330983#Citation_templates.2C_redux)
 
-Authors are often linked to a page in Wikispecies, and this page may in turn be linked to Wikidata, which can have other identifiers (e.g., ORCID, VIAF, ISNI, IPNI, etc.).
+### Parse reference
 
-## WikiCite
+```https://acoustic-bandata.glitch.me/parse?string=``` and URL encoded Wikispecies reference (source of template, or source of a reference string from a page)
 
-Goals are related to [WikiCite](https://meta.wikimedia.org/wiki/WikiCite) project.
+```
+* {{a|Hirotsugu Ono|Ono, H.}} & {{a|Akio Tanikawa|Tanikawa, A.}} 1990. A revision of the Japanese spiders of the genus ''Langbiana'' (Araneae, Zodariidae). ''Memoirs of the National Science Museum, Tokyo'' 23: 101–112. [107, f. 13–19] [http://ci.nii.ac.jp/lognavi?name=nels&lang=en&type=pdf&id=ART0006481696 (PDF)] <includeonly>[http://species.wikimedia.org/wiki/Template:Ono_%26_Tanikawa,_1990 Reference page.]</includeonly> <noinclude>
+** [http://species.wikimedia.org/wiki/Special:WhatLinksHere/Template:{{BASEPAGENAMEE}} find all Wikispecies pages which cite this reference][[Category:Reference templates]]</noinclude>        
+    
+```
+      
+    
+
+
