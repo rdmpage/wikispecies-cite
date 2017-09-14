@@ -50,6 +50,13 @@ $title = 'Trachylepis';
 $title = 'Hapalomys';
 $title = 'Viatcheslav_V._Rozhnov';
 
+$title = 'Ryuthela nishihirai';
+
+$title = 'Erik_J._van_Nieukerken';
+
+$title = 'Guillermo_Kuschel';
+$title = 'Roberto_Pace'; // huge number of articles
+
 $citations = array();
 
 $queue[] = $title;
