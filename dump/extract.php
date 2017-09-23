@@ -46,10 +46,21 @@ while (!feof($file_handle))
 		case 1:
 			if (preg_match('/^\s+<\/page>/', $line))
 			{
-				//echo "\n\n*****\n\n";
-				//echo $page;
+				/*
+				echo "\n\n*****\n\n";
+				echo $page;
+				echo "\n\n*****\n\n";
+				exit();
+				*/
 				
-				if (count($refs) > 0)
+				// taxonomy
+				$parent = '';
+				if (preg_match('/== Taxonavigation ==\s+\{\{(?<parent>.*)\}\}/Uu', $page, $m))
+				{
+					$parent = $m['parent'];
+				}
+				
+				if ((count($refs) > 0) || ($parent != ''))
 				{
 				
 					$obj = new stdclass;
@@ -58,6 +69,34 @@ while (!feof($file_handle))
 					$obj->title = $title;
 					$obj->timestamp = $timestamp;
 					
+					if ($parent != '')
+					{
+						$obj->taxonavigation = $parent;
+					}
+					
+					// grab text
+					$obj->text = $page;
+					// trim
+					$pos = strpos($obj->text, '<text xml:space="preserve">');
+					if ($pos === false)
+					{
+						//echo "not found;\n"; exit();
+					}
+					else
+					{
+						$pos += strlen('<text xml:space="preserve">');
+						$obj->text = substr($obj->text, $pos);
+					}
+					
+					$pos = strpos($obj->text, '</text>');
+					if ($pos === false)
+					{
+					}
+					else
+					{
+						$obj->text = substr($obj->text, 0, $pos);
+					}
+
 					foreach ($refs as $r)
 					{
 						$citation = new stdclass;
@@ -107,7 +146,6 @@ while (!feof($file_handle))
 							}
 						}
 					}	
-							
 					
 					
 					print_r($obj);
