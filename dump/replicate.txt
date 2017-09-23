@@ -1,0 +1,1 @@
+curl http://localhost:5984/_replicate -H 'Content-Type: application/json' -d '{ "source": "wikispecies-references", "target": "https://rdmpage:<password>@rdmpage.cloudant.com/wikispecies-references"}'
